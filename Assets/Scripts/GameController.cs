@@ -48,6 +48,8 @@ public class GameController : MonoBehaviour {
 				hitPos = Camera.main.ScreenToWorldPoint (hitPos);
 				ballInstance.transform.LookAt (hitPos);
 				ballInstance.GetComponent<Rigidbody> ().AddRelativeForce (ballInstance.transform.forward * ballForce, ForceMode.Impulse);
+
+				Invoke ("CreateBall", 2f);
 			}
 		}
 	}
