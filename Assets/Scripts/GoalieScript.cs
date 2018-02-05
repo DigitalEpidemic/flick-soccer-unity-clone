@@ -8,12 +8,6 @@ public class GoalieScript : MonoBehaviour {
 	private float minX = -1.22f;
 	private bool moveLeft = true;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void Update () {
 		MoveInNet ();
 	}
@@ -37,4 +31,4 @@ public class GoalieScript : MonoBehaviour {
 			}
 		}
 	}
-}
+} // GoalieScript

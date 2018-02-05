@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
+	public static GameController instance;
 
 	[SerializeField]
 	private GameObject ballPrefab;
@@ -17,21 +19,42 @@ public class GameController : MonoBehaviour {
 	private float minFlickDistance = 15f;
 	private float zDepth = 25f;
 
+	public int score;
+	public Text scoreText;
+
 	void Awake () {
+		CreateInstance ();
 	}
 
-	// Use this for initialization
 	void Start () {
 		CreateBall ();
 	}
-	
-	// Update is called once per frame
+
+	void CreateInstance () {
+		if (instance == null) {
+			instance = this;
+		}
+	}
+
 	void Update () {
 		FlickAction ();
+		UpdateScore ();
+	}
+
+	void UpdateScore () {
+		scoreText.text = "" + score;
 	}
 
 	void CreateBall () {
 		ballInstance = Instantiate (ballPrefab, ballPrefab.transform.position, Quaternion.identity);
+	}
+
+	void RespawnBall() {
+		ballInstance.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		ballInstance.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+		ballInstance.transform.rotation = Quaternion.identity;
+		Vector3 restart = new Vector3 (0f, 0.1f, 5f);
+		ballInstance.transform.position = restart;
 	}
 
 	void FlickAction () {
@@ -49,9 +72,10 @@ public class GameController : MonoBehaviour {
 				ballInstance.transform.LookAt (hitPos);
 				ballInstance.GetComponent<Rigidbody> ().AddRelativeForce (ballInstance.transform.forward * ballForce, ForceMode.Impulse);
 
-				Invoke ("CreateBall", 2f);
+				Invoke ("RespawnBall", 3f);
 			}
 		}
 	}
+		
 
 } // GameController
